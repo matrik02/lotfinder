@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Peta LOT_0</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Fail GeoJSON -->
+<script src="LOT_0.js"></script>
+
+<script>
+  // Inisialisasi peta
+  var map = L.map('map').setView([2.1038, 102.5213], 18);
+
+  // Lapisan asas peta
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Paparkan geojson dari pembolehubah json_LOT_0
+  L.geoJSON(json_LOT_0, {
+    onEachFeature: function (feature, layer) {
+      var prop = feature.properties;
+      var popupText = `<strong>${prop.NAMA}</strong><br>Nombor Lot: ${prop.lot_number}<br>PA: ${prop.NO_PA}<br>Mukim: ${prop.mukim}`;
+      layer.bindPopup(popupText);
+    },
+    style: {
+      color: 'blue',
+      weight: 1,
+      fillOpacity: 0.3
+    }
+  }).addTo(map);
+
+</script>
+
+</body>
+</html>
