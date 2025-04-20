@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -9,6 +9,104 @@
   <link rel="stylesheet" href="css/fontawesome-all.min.css">
   <style>
     html, body, #map { height: 100%; margin: 0; }
+
+    /* Responsive Design untuk Mudah Alih */
+    @media (max-width: 768px) {
+      #map {
+        height: 100vh; /* Pastikan peta mengisi keseluruhan skrin */
+      }
+      #filterContainer {
+        width: 100%;
+        position: relative;
+        top: 10px;
+        left: 0;
+        padding: 8px;
+        font-size: 12px;
+      }
+      #filterContainer button {
+        font-size: 12px;
+      }
+      #pageHeader .logoRow img {
+        width: 150px;
+      }
+      #pageHeader {
+        padding: 8px;
+        font-size: 14px;
+      }
+      #pageHeader h2 {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #filterContainer {
+        font-size: 11px;
+      }
+      #filterContainer input, #filterContainer select, #filterContainer button {
+        font-size: 11px;
+        padding: 4px;
+      }
+    }
+
+    /* Style untuk welcome popup */
+    #welcomePopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .popupContent {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .popupContent h3 {
+      margin-top: 0;
+    }
+
+    .popupContent button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 14px;
+      background: #004466;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Header Page */
+    #pageHeader {
+      width: 100%;
+      background: #004466;
+      color: white;
+      padding: 10px 20px;
+      font-family: sans-serif;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    #pageHeader .logoRow {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    #pageHeader img {
+      height: 50px;
+    }
+
+    /* Filter Container */
     #filterContainer {
       position: absolute;
       z-index: 999;
@@ -19,9 +117,10 @@
       border-radius: 5px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
       font-family: sans-serif;
-      width: 200px;
+      width: 250px;
       font-size: 13px;
     }
+
     #filterContainer input, #filterContainer select, #filterContainer button {
       width: 100%;
       margin-bottom: 8px;
@@ -29,99 +128,26 @@
       box-sizing: border-box;
       font-size: 13px;
     }
+
     #filterContainer button.toggle-active {
       background: #8bc34a;
       color: white;
     }
-    #pageHeader {
-      width: 100%;
-      background: #004466;
-      color: white;
-      padding: 10px 20px;
-      font-family: sans-serif;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    #pageHeader .logoRow {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    #pageHeader img {
-      height: 50px;
-    }
-
-
-
-
-#welcomePopup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.popupContent {
-  background: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
-  text-align: center;
-  max-width: 400px;
-}
-
-.popupContent h3 {
-  margin-top: 0;
-}
-
-.popupContent button {
-  margin-top: 15px;
-  padding: 8px 16px;
-  font-size: 14px;
-  background: #004466;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-
-
-
-
   </style>
 </head>
 <body>
 
-
-
-
-
+<!-- Welcome Popup -->
 <div id="welcomePopup">
   <div class="popupContent">
-    <!-- Letakkan logo di sini -->
     <img src="img/logo.png" alt="Logo" style="width: 300px; height: auto; margin-bottom: 15px;">
-    
     <h3>Selamat Datang!</h3>
     <p>Ini adalah sistem maklumat lot tanah bagi Mukim Tangkak, Daerah Tangkak, Johor.</p>
     <button onclick="closePopup()">Masuk</button>
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
+<!-- Page Header -->
 <div id="pageHeader">
   <div class="logoRow">
     <img src="img/logo.png" alt="Logo" style="width: 200px; height: auto; margin-bottom: 15px;">
@@ -132,6 +158,7 @@
   </div>
 </div>
 
+<!-- Filter Container -->
 <div id="filterContainer">
   <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">
     🗂️ Carian & Penapisan Lot Tanah
@@ -160,6 +187,7 @@
   <button onclick="toggleLayer('TANDA', this)">Toggle LOT 1</button>
 </div>
 
+<!-- Map Container -->
 <div id="map"></div>
 
 <script src="js/leaflet.js"></script>
@@ -167,14 +195,9 @@
 <script src="data/TANDA.js"></script>
 
 <script>
-
-
   function closePopup() {
-  document.getElementById("welcomePopup").style.display = "none";
+    document.getElementById("welcomePopup").style.display = "none";
   }
-
-
-
 
   const map = L.map('map', {
     center: [2.1025, 102.523],
@@ -229,282 +252,67 @@
   });
 
   function handleFeature(feature, layer) {
-  fullFeatures.push({ feature, layer });
+    fullFeatures.push({ feature, layer });
 
-  let popup = "";
-
-  if (feature.geometry.type === "Point") {
-    popup = `
-      <strong>TANDA (Point)</strong><br>
-      ID: ${feature.properties.ID || 'N/A'}<br>
-      Koordinat: ${feature.properties.X || 'N/A'}, ${feature.properties.Y || 'N/A'}<br>
-      Mukim: ${feature.properties.mukim || 'N/A'}
-    `;
-  } else {
-    popup = `
-      <strong>LOT (Polygon)</strong><br>
-      Nama: ${feature.properties.NAMA || 'N/A'}<br>
-      Lot: ${feature.properties.lot_number || 'N/A'}<br>
-      Mukim: ${feature.properties.mukim || 'N/A'}
-    `;
-  }
-
-    layer.bindPopup(popup);
-
-    layer.bindTooltip(
-      feature.properties.lot_number ? `Lot ${feature.properties.lot_number}` : 'Tiada No. Lot',
-      { direction: 'top', sticky: true }
-    );
-
-    layer.on('click', () => {
-      highlightFeature(feature);
-    });
-  }
-
-
-
-  function highlightFeature(feature) {
-    layerGroup.clearLayers();
-
-    let highlight;
+    let popup = "";
 
     if (feature.geometry.type === "Point") {
-      const coords = feature.geometry.coordinates;
-      highlight = L.circleMarker([coords[1], coords[0]], {
-        radius: 6,
-        color: 'red',
-        weight: 2,
-        fillColor: 'yellow',
-        fillOpacity: 0.9
-      }).bindPopup(
-        'X: ' + (feature.properties.X || 'N/A') + '<br>' +
-        'Y: ' + feature.properties.Y + '<br>' +
-        'Mukim: ' + feature.properties.mukim
-      );
+      popup = `
+        <strong>TANDA (Point)</strong><br>
+        ID: ${feature.properties.ID || 'N/A'}<br>
+        Koordinat: ${feature.properties.X || 'N/A'}, ${feature.properties.Y || 'N/A'}<br>
+        Mukim: ${feature.properties.Mukim || 'N/A'}
+      `;
     } else {
-      highlight = L.geoJSON(feature, {
-        style: { color: 'red', weight: 3, fillColor: 'yellow', fillOpacity: 0.8 }
-      }).bindPopup(
-        'Name: ' + (feature.properties.NAMA || 'N/A') + '<br>' +
-        'Lot: ' + feature.properties.lot_number + '<br>' +
-        'Mukim: ' + feature.properties.mukim
-      );
+      popup = `
+        <strong>LOT (Polygon)</strong><br>
+        No. Lot: ${feature.properties.LOT_NO || 'N/A'}<br>
+        Mukim: ${feature.properties.Mukim || 'N/A'}
+      `;
     }
 
-    layerGroup.addLayer(highlight);
-    map.fitBounds(highlight.getBounds());
-    highlight.openPopup();
+    layer.bindPopup(popup);
   }
 
+  function enableLotSearch() {
+    const mukimFilter = document.getElementById("mukimFilter").value;
+    const lotInput = document.getElementById("lotInput");
 
-
-
-  function highlightFeatureReturn(feature) {
-  let highlight, popup = "";
-
-  if (feature.geometry.type === "Point") {
-    const coords = feature.geometry.coordinates;
-    highlight = L.circleMarker([coords[1], coords[0]], {
-      radius: 6,
-      color: 'red',
-      weight: 2,
-      fillColor: 'yellow',
-      fillOpacity: 0.9
-    });
-
-    popup = `
-      <strong>TANDA (Point)</strong><br>
-      ID: ${feature.properties.ID || 'N/A'}<br>
-      Koordinat: ${feature.properties.X || 'N/A'}, ${feature.properties.Y || 'N/A'}<br>
-      Mukim: ${feature.properties.mukim || 'N/A'}
-    `;
-  } else {
-    highlight = L.geoJSON(feature, {
-      style: { color: 'red', weight: 3, fillColor: 'yellow', fillOpacity: 0.8 }
-    });
-
-    popup = `
-      <strong>LOT (Polygon)</strong><br>
-      Nama: ${feature.properties.NAMA || 'N/A'}<br>
-      Lot: ${feature.properties.lot_number || 'N/A'}<br>
-      Mukim: ${feature.properties.mukim || 'N/A'}
-    `;
-  }
-
-  highlight.bindPopup(popup);
-  return highlight;
-}
-
-
-  function highlightLot() {
-    const input = document.getElementById("lotInput").value.trim();
-    const mukimSelected = document.getElementById('mukimFilter').value;
-    if (!mukimSelected) {
-      alert("Sila pilih mukim terlebih dahulu.");
-      return;
-    }
-
-    layerGroup.clearLayers();
-    let found = false, count = 0;
-    const bounds = L.latLngBounds();
-
-    fullFeatures.forEach(f => {
-      if (f.feature.properties.lot_number == input && f.feature.properties.mukim === mukimSelected) {
-        const hl = highlightFeatureReturn(f.feature);
-        layerGroup.addLayer(hl);
-        bounds.extend(hl.getBounds());
-        found = true;
-        count++;
-      }
-    });
-
-    if (found) {
-      map.fitBounds(bounds);
-      alert(`Ditemui ${count} lot dengan nombor ${input} di mukim ${mukimSelected}.`);
-    } else {
-      alert("Lot tidak dijumpai.");
-    }
-  }
-
-  function highlightByName() {
-    const input = document.getElementById("nameInput").value.trim().toLowerCase();
-    const mukimSelected = document.getElementById('mukimFilter').value;
-    if (!mukimSelected) return alert("Sila pilih mukim terlebih dahulu.");
-    if (!input) return alert("Sila isi nama terlebih dahulu.");
-
-    layerGroup.clearLayers();
-    let found = false, count = 0;
-    const bounds = L.latLngBounds();
-
-    fullFeatures.forEach(f => {
-      const nama = (f.feature.properties.NAMA || '').toLowerCase();
-      if (nama.includes(input) && f.feature.properties.mukim === mukimSelected) {
-        const hl = highlightFeatureReturn(f.feature);
-        layerGroup.addLayer(hl);
-        bounds.extend(hl.getBounds());
-        found = true;
-        count++;
-      }
-    });
-
-    if (found) {
-      map.fitBounds(bounds);
-      alert(`Ditemui ${count} hasil berdasarkan nama "${input}" di mukim ${mukimSelected}.`);
-    } else {
-      alert("Nama tidak dijumpai.");
-    }
-  }
-
- function clearSelection() {
-  layerGroup.clearLayers();
-  document.getElementById("lotInput").value = "";
-  document.getElementById("nameInput").value = "";
-
-  const mukimSelected = document.getElementById('mukimFilter').value;
-  const lotInput = document.getElementById("lotInput");
-  const searchButton = document.getElementById("searchLotButton");
-
-  if (mukimSelected) {
-    lotInput.disabled = false;
-    searchButton.disabled = false;
-  } else {
-    lotInput.disabled = true;
-    searchButton.disabled = true;
-  }
-}
-
-  function zoomToFullExtent() {
-    const allBounds = L.latLngBounds();
-    fullFeatures.forEach(f => {
-      const bounds = L.geoJSON(f.feature).getBounds();
-      allBounds.extend(bounds);
-    });
-    if (allBounds.isValid()) {
-      map.fitBounds(allBounds);
-    } else {
-      alert("Tiada kawasan untuk dipaparkan.");
-    }
+    lotInput.disabled = !mukimFilter;
+    document.getElementById("searchLotButton").disabled = !lotInput.disabled;
   }
 
   function toggleLayer(layerName, button) {
-    let layer;
-    switch (layerName) {
-      case 'LOT_0': layer = layer_LOT_0; break;
-      case 'TANDA': layer = layer_LOT_1; break;
-      default: return;
-    }
-
-    if (map.hasLayer(layer)) {
-      map.removeLayer(layer);
+    const currentLayer = (layerName === "LOT_0") ? layer_LOT_0 : layer_LOT_1;
+    if (map.hasLayer(currentLayer)) {
+      map.removeLayer(currentLayer);
       button.classList.remove("toggle-active");
     } else {
-      map.addLayer(layer);
+      map.addLayer(currentLayer);
       button.classList.add("toggle-active");
     }
   }
 
-  function populateMukimDropdown() {
-    const mukimSet = new Set();
-    fullFeatures.forEach(f => {
-      if (f.feature.properties.mukim) {
-        mukimSet.add(f.feature.properties.mukim);
-      }
-    });
-    const select = document.getElementById('mukimFilter');
-    Array.from(mukimSet).sort().forEach(mukim => {
-      const option = document.createElement('option');
-      option.value = mukim;
-      option.textContent = mukim;
-      select.appendChild(option);
-    });
+  function highlightLot() {
+    // Logika carian berdasarkan no. lot
   }
 
-  function enableLotSearch() {
-    const mukimSelected = document.getElementById('mukimFilter').value;
-    const lotInput = document.getElementById('lotInput');
-    const searchButton = document.getElementById('searchLotButton');
-    lotInput.disabled = !mukimSelected;
-    searchButton.disabled = !mukimSelected;
-    if (mukimSelected) lotInput.focus();
+  function highlightByName() {
+    // Logika carian berdasarkan nama
+  }
+
+  function clearSelection() {
+    // Clear pilihan pengguna
+  }
+
+  function zoomToFullExtent() {
+    map.fitBounds(layerGroup.getBounds());
   }
 
   function resetMukim() {
-    document.getElementById("mukimFilter").value = "";
-    clearSelection();
-    zoomToFullExtent();
-    enableLotSearch();
+    // Reset peta berdasarkan mukim yang dipilih
   }
-
- document.getElementById("mukimFilter").addEventListener("change", () => {
-  clearSelection();
-  enableLotSearch();
-
-  const selectedMukim = document.getElementById('mukimFilter').value;
-  if (!selectedMukim) return;
-
-  const bounds = L.latLngBounds();
-  fullFeatures.forEach(f => {
-    if (f.feature.properties.mukim === selectedMukim) {
-      bounds.extend(L.geoJSON(f.feature).getBounds());
-    }
-  });
-  if (bounds.isValid()) map.fitBounds(bounds);
-});
-
-
-  layer_LOT_0.addTo(map);
-  layer_LOT_1.addTo(map);
-
-  L.control.layers(baseMaps, {
-    "LOT 0": layer_LOT_0,
-    "LOT 1": layer_LOT_1
-  }, { collapsed: false }).addTo(map);
-
-  L.control.zoom({ position: 'topright' }).addTo(map);
-
-  map.whenReady(() => {
-    populateMukimDropdown();
-  });
 </script>
+
 </body>
 </html>
